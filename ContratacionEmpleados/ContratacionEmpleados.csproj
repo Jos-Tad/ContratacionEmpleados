@@ -163,9 +163,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Empleados_BD.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Models\sysdiagrams.cs">
-      <DependentUpon>Empleados_BD.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\TipoContrato.cs">
       <DependentUpon>Empleados_BD.tt</DependentUpon>
     </Compile>
@@ -242,9 +239,6 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Empleados_BD.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Models\Empleados_BD.edmx.diagram">
-      <DependentUpon>Empleados_BD.edmx</DependentUpon>
-    </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Web.config" />

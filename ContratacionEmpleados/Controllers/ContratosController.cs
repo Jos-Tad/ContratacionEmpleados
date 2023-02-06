@@ -14,18 +14,16 @@ namespace ContratacionEmpleados.Controllers
         // GET: Contratos
         public ActionResult Crear()
         {
+            ViewData["IdEmpleado"] = new SelectList(context.Empleados, "IdEmpleado", "Nombre");
             return View();
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpPost]        
         public ActionResult Crear(Models.ViewModels.Contrato_VM contrato_VM)
         {
 
-            
             try
-            {
-               
+                {
 
                 Contrato e = new Contrato();
                 e.IdEmpleado = contrato_VM.IdEmpleado;
@@ -33,23 +31,21 @@ namespace ContratacionEmpleados.Controllers
                 e.IdCargo = contrato_VM.IdCargo;
                 e.TipoContrato = contrato_VM.TipoContrato;
                 e.Salario = contrato_VM.Salario;
-                e.FechaFin = contrato_VM.FechaFin;
+                e.FechaFin = contrato_VM.FechaFin
                 e.FechaInicio = contrato_VM.FechaInicio;
-                e.EstadoFila = true;
+                e.EstadoFila = true;              
                 context.Contrato.Add(e);
-                context.SaveChanges();
-                return Redirect("~/Empleados");
-            }
-            catch (Exception e)
-            {
+                    context.SaveChanges();
+                    return Redirect("~/Empleados/");
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+               
+            
+           
 
-            };
-
-
-
-
-
-            return View();
         }
     }
 }

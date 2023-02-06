@@ -25,13 +25,9 @@
           <Property Name="RangoSalarialFinal" Type="float" />
           <Property Name="Activo" Type="bit" Nullable="false" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'bd_Pruebas.contratacion.Contrato' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="Contrato">
           <Key>
             <PropertyRef Name="IdContrato" />
-            <PropertyRef Name="IdEmpleado" />
-            <PropertyRef Name="Salario" />
           </Key>
           <Property Name="IdContrato" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IdEmpleado" Type="int" Nullable="false" />
@@ -67,35 +63,6 @@ advertencia 6002: La tabla o vista 'bd_Pruebas.contratacion.Contrato' no tiene d
           <Property Name="AplicaIndemnizacion" Type="bit" Nullable="false" />
           <Property Name="Activo" Type="bit" Nullable="false" />
         </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="principal_id" Type="int" Nullable="false" />
-          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="version" Type="int" />
-          <Property Name="definition" Type="varbinary(max)" />
-        </EntityType>
-        <!--Errores durante la generación:
-advertencia 6013: La tabla o vista 'bd_Pruebas.dbo.TmpMigrarEmpleados' no tiene definida una clave principal y no es posible inferir ninguna clave principal válida. Esta tabla o vista se ha excluido. Para usar la entidad, necesitará revisar el esquema, agregar las claves correctas y quitar sus comentarios.
-        <EntityType Name="TmpMigrarEmpleados">
-          <Property Name="CodigoDL" Type="nvarchar" MaxLength="100" />
-          <Property Name="Nombres" Type="nvarchar" MaxLength="100" />
-          <Property Name="Apellidos" Type="nvarchar" MaxLength="100" />
-          <Property Name="Genero" Type="int" />
-          <Property Name="TelefonoPersonal" Type="nvarchar" MaxLength="100" />
-          <Property Name="EmailPersonal" Type="nvarchar" MaxLength="100" />
-          <Property Name="TipoSangre" Type="nvarchar" MaxLength="100" />
-          <Property Name="Fotografia" Type="nvarchar" MaxLength="100" />
-          <Property Name="FechaInicio" Type="date" />
-          <Property Name="FechaFin" Type="date" />
-          <Property Name="CodigoArea" Type="nvarchar" MaxLength="100" />
-          <Property Name="CodigoCargo" Type="nvarchar" MaxLength="100" />
-          <Property Name="NombreTipoContrato" Type="nvarchar" MaxLength="100" />
-          <Property Name="EstadoFila" Type="bit" />
-          <Property Name="Salario" Type="float" />
-        </EntityType>-->
         <Association Name="FK_Contrato_Areas">
           <End Role="Areas" Type="Self.Areas" Multiplicity="0..1" />
           <End Role="Contrato" Type="Self.Contrato" Multiplicity="*" />
@@ -147,22 +114,9 @@ advertencia 6013: La tabla o vista 'bd_Pruebas.dbo.TmpMigrarEmpleados' no tiene 
         <EntityContainer Name="bd_PruebasModelStoreContainer">
           <EntitySet Name="Areas" EntityType="Self.Areas" Schema="contratacion" store:Type="Tables" />
           <EntitySet Name="Cargos" EntityType="Self.Cargos" Schema="contratacion" store:Type="Tables" />
+          <EntitySet Name="Contrato" EntityType="Self.Contrato" Schema="contratacion" store:Type="Tables" />
           <EntitySet Name="Empleados" EntityType="Self.Empleados" Schema="contratacion" store:Type="Tables" />
           <EntitySet Name="TipoContrato" EntityType="Self.TipoContrato" Schema="contratacion" store:Type="Tables" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Contrato" EntityType="Self.Contrato" store:Type="Tables" store:Schema="contratacion">
-            <DefiningQuery>SELECT 
-    [Contrato].[IdContrato] AS [IdContrato], 
-    [Contrato].[IdEmpleado] AS [IdEmpleado], 
-    [Contrato].[FechaInicio] AS [FechaInicio], 
-    [Contrato].[FechaFin] AS [FechaFin], 
-    [Contrato].[IdArea] AS [IdArea], 
-    [Contrato].[IdCargo] AS [IdCargo], 
-    [Contrato].[TipoContrato] AS [TipoContrato], 
-    [Contrato].[EstadoFila] AS [EstadoFila], 
-    [Contrato].[Salario] AS [Salario]
-    FROM [contratacion].[Contrato] AS [Contrato]</DefiningQuery>
-          </EntitySet>
           <AssociationSet Name="FK_Contrato_Areas" Association="Self.FK_Contrato_Areas">
             <End Role="Areas" EntitySet="Areas" />
             <End Role="Contrato" EntitySet="Contrato" />
@@ -187,10 +141,9 @@ advertencia 6013: La tabla o vista 'bd_Pruebas.dbo.TmpMigrarEmpleados' no tiene 
         <EntityContainer Name="bd_PruebasEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Areas" EntityType="bd_PruebasModel.Areas" />
           <EntitySet Name="Cargos" EntityType="bd_PruebasModel.Cargos" />
+          <EntitySet Name="Contrato" EntityType="bd_PruebasModel.Contrato" />
           <EntitySet Name="Empleados" EntityType="bd_PruebasModel.Empleados" />
           <EntitySet Name="TipoContrato" EntityType="bd_PruebasModel.TipoContrato" />
-          <EntitySet Name="sysdiagrams" EntityType="bd_PruebasModel.sysdiagrams" />
-          <EntitySet Name="Contrato" EntityType="bd_PruebasModel.Contrato" />
           <AssociationSet Name="FK_Contrato_Areas" Association="bd_PruebasModel.FK_Contrato_Areas">
             <End Role="Areas" EntitySet="Areas" />
             <End Role="Contrato" EntitySet="Contrato" />
@@ -230,6 +183,24 @@ advertencia 6013: La tabla o vista 'bd_Pruebas.dbo.TmpMigrarEmpleados' no tiene 
           <Property Name="Activo" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Contrato" Relationship="bd_PruebasModel.FK_Contrato_Cargos" FromRole="Cargos" ToRole="Contrato" />
         </EntityType>
+        <EntityType Name="Contrato">
+          <Key>
+            <PropertyRef Name="IdContrato" />
+          </Key>
+          <Property Name="IdContrato" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdEmpleado" Type="Int32" Nullable="false" />
+          <Property Name="FechaInicio" Type="DateTime" Precision="0" />
+          <Property Name="FechaFin" Type="DateTime" Precision="0" />
+          <Property Name="IdArea" Type="Int32" />
+          <Property Name="IdCargo" Type="Int32" />
+          <Property Name="TipoContrato" Type="Int32" />
+          <Property Name="EstadoFila" Type="Boolean" />
+          <Property Name="Salario" Type="Double" Nullable="false" />
+          <NavigationProperty Name="Areas" Relationship="bd_PruebasModel.FK_Contrato_Areas" FromRole="Contrato" ToRole="Areas" />
+          <NavigationProperty Name="Cargos" Relationship="bd_PruebasModel.FK_Contrato_Cargos" FromRole="Contrato" ToRole="Cargos" />
+          <NavigationProperty Name="Empleados" Relationship="bd_PruebasModel.FK_Contrato_Empleados" FromRole="Contrato" ToRole="Empleados" />
+          <NavigationProperty Name="TipoContrato1" Relationship="bd_PruebasModel.FK_Contrato_TipoContrato" FromRole="Contrato" ToRole="TipoContrato" />
+        </EntityType>
         <EntityType Name="Empleados">
           <Key>
             <PropertyRef Name="IdEmpleado" />
@@ -255,36 +226,6 @@ advertencia 6013: La tabla o vista 'bd_Pruebas.dbo.TmpMigrarEmpleados' no tiene 
           <Property Name="AplicaIndemnizacion" Type="Boolean" Nullable="false" />
           <Property Name="Activo" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Contrato" Relationship="bd_PruebasModel.FK_Contrato_TipoContrato" FromRole="TipoContrato" ToRole="Contrato" />
-        </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
-        </EntityType>
-        <EntityType Name="Contrato">
-          <Key>
-            <PropertyRef Name="IdContrato" />
-            <PropertyRef Name="IdEmpleado" />
-            <PropertyRef Name="Salario" />
-          </Key>
-          <Property Name="IdContrato" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IdEmpleado" Type="Int32" Nullable="false" />
-          <Property Name="FechaInicio" Type="DateTime" Precision="0" />
-          <Property Name="FechaFin" Type="DateTime" Precision="0" />
-          <Property Name="IdArea" Type="Int32" />
-          <Property Name="IdCargo" Type="Int32" />
-          <Property Name="TipoContrato" Type="Int32" />
-          <Property Name="EstadoFila" Type="Boolean" />
-          <Property Name="Salario" Type="Double" Nullable="false" />
-          <NavigationProperty Name="Areas" Relationship="bd_PruebasModel.FK_Contrato_Areas" FromRole="Contrato" ToRole="Areas" />
-          <NavigationProperty Name="Cargos" Relationship="bd_PruebasModel.FK_Contrato_Cargos" FromRole="Contrato" ToRole="Cargos" />
-          <NavigationProperty Name="Empleados" Relationship="bd_PruebasModel.FK_Contrato_Empleados" FromRole="Contrato" ToRole="Empleados" />
-          <NavigationProperty Name="TipoContrato1" Relationship="bd_PruebasModel.FK_Contrato_TipoContrato" FromRole="Contrato" ToRole="TipoContrato" />
         </EntityType>
         <Association Name="FK_Contrato_Areas">
           <End Type="bd_PruebasModel.Areas" Role="Areas" Multiplicity="0..1" />
@@ -362,6 +303,21 @@ advertencia 6013: La tabla o vista 'bd_Pruebas.dbo.TmpMigrarEmpleados' no tiene 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Contrato">
+            <EntityTypeMapping TypeName="bd_PruebasModel.Contrato">
+              <MappingFragment StoreEntitySet="Contrato">
+                <ScalarProperty Name="Salario" ColumnName="Salario" />
+                <ScalarProperty Name="EstadoFila" ColumnName="EstadoFila" />
+                <ScalarProperty Name="TipoContrato" ColumnName="TipoContrato" />
+                <ScalarProperty Name="IdCargo" ColumnName="IdCargo" />
+                <ScalarProperty Name="IdArea" ColumnName="IdArea" />
+                <ScalarProperty Name="FechaFin" ColumnName="FechaFin" />
+                <ScalarProperty Name="FechaInicio" ColumnName="FechaInicio" />
+                <ScalarProperty Name="IdEmpleado" ColumnName="IdEmpleado" />
+                <ScalarProperty Name="IdContrato" ColumnName="IdContrato" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Empleados">
             <EntityTypeMapping TypeName="bd_PruebasModel.Empleados">
               <MappingFragment StoreEntitySet="Empleados">
@@ -388,32 +344,6 @@ advertencia 6013: La tabla o vista 'bd_Pruebas.dbo.TmpMigrarEmpleados' no tiene 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="bd_PruebasModel.sysdiagrams">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="definition" ColumnName="definition" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="name" ColumnName="name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Contrato">
-            <EntityTypeMapping TypeName="bd_PruebasModel.Contrato">
-              <MappingFragment StoreEntitySet="Contrato">
-                <ScalarProperty Name="Salario" ColumnName="Salario" />
-                <ScalarProperty Name="EstadoFila" ColumnName="EstadoFila" />
-                <ScalarProperty Name="TipoContrato" ColumnName="TipoContrato" />
-                <ScalarProperty Name="IdCargo" ColumnName="IdCargo" />
-                <ScalarProperty Name="IdArea" ColumnName="IdArea" />
-                <ScalarProperty Name="FechaFin" ColumnName="FechaFin" />
-                <ScalarProperty Name="FechaInicio" ColumnName="FechaInicio" />
-                <ScalarProperty Name="IdEmpleado" ColumnName="IdEmpleado" />
-                <ScalarProperty Name="IdContrato" ColumnName="IdContrato" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -437,12 +367,11 @@ advertencia 6013: La tabla o vista 'bd_Pruebas.dbo.TmpMigrarEmpleados' no tiene 
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
       <Diagram DiagramId="7f4c2997a4744d41bc6a21015e2b9654" Name="Diagram1">
-        <EntityTypeShape EntityType="bd_PruebasModel.Areas" Width="1.5" PointX="5.25" PointY="5.875" />
-        <EntityTypeShape EntityType="bd_PruebasModel.Cargos" Width="1.5" PointX="0.75" PointY="5.875" />
-        <EntityTypeShape EntityType="bd_PruebasModel.Empleados" Width="1.5" PointX="3.125" PointY="5.75" />
-        <EntityTypeShape EntityType="bd_PruebasModel.TipoContrato" Width="1.5" PointX="0.75" PointY="1.625" />
-        <EntityTypeShape EntityType="bd_PruebasModel.sysdiagrams" Width="1.5" PointX="5.75" PointY="0.75" />
-        <EntityTypeShape EntityType="bd_PruebasModel.Contrato" Width="1.5" PointX="9.5" PointY="1.375" IsExpanded="false" />
+        <EntityTypeShape EntityType="bd_PruebasModel.Areas" Width="1.5" PointX="4.875" PointY="2.125" />
+        <EntityTypeShape EntityType="bd_PruebasModel.Cargos" Width="1.5" PointX="4.875" PointY="9" />
+        <EntityTypeShape EntityType="bd_PruebasModel.Contrato" Width="1.5" PointX="7.125" PointY="1.375" />
+        <EntityTypeShape EntityType="bd_PruebasModel.Empleados" Width="1.5" PointX="4.875" PointY="12.125" />
+        <EntityTypeShape EntityType="bd_PruebasModel.TipoContrato" Width="1.5" PointX="4.875" PointY="6" />
         <AssociationConnector Association="bd_PruebasModel.FK_Contrato_Areas" />
         <AssociationConnector Association="bd_PruebasModel.FK_Contrato_Cargos" />
         <AssociationConnector Association="bd_PruebasModel.FK_Contrato_Empleados" />

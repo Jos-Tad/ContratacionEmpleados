@@ -27,9 +27,8 @@ namespace ContratacionEmpleados.Models
     
         public virtual DbSet<Areas> Areas { get; set; }
         public virtual DbSet<Cargos> Cargos { get; set; }
+        public virtual DbSet<Contrato> Contrato { get; set; }
         public virtual DbSet<Empleados> Empleados { get; set; }
         public virtual DbSet<TipoContrato> TipoContrato { get; set; }
-        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
-        public virtual DbSet<Contrato> Contrato { get; set; }
     }
 }

@@ -19,8 +19,8 @@ namespace ContratacionEmpleados.Controllers
             
             using (bd_PruebasEntities db = new bd_PruebasEntities())
             {
-                var lista = (from a in db.Empleados
-                             select new ListarEmpleado_VM
+                var lista = (from a in db.Empleados /*where a.EstadoFila = true*/
+                             select new ListarEmpleado_VM 
                              {
                                  IdEmpleado = a.IdEmpleado,
                                  Codigo = a.Codigo,
@@ -44,6 +44,7 @@ namespace ContratacionEmpleados.Controllers
 
         public ActionResult Crear()
         {
+            Lista();
             return View();
         }
 
@@ -71,10 +72,11 @@ namespace ContratacionEmpleados.Controllers
                 e.EmailPersonal = listarEmpleado_VM.EmailPersonal;
                 e.Genero = listarEmpleado_VM.Genero;
                 e.Fotografia = "/" + rutaFotografia;
-                e.TipoSangre = listarEmpleado_VM.TipoSangre;                
+                e.TipoSangre = listarEmpleado_VM.TipoSangre;  
+                //e.EstadoFila = true;
                 context.Empleados.Add(e);
                 context.SaveChanges();
-                return Redirect("~/Empleados/");
+                return Redirect("~/Empleados/Crear");
             }
             catch (Exception e)
             {
@@ -139,6 +141,7 @@ namespace ContratacionEmpleados.Controllers
                     e.Genero = context.Genero;
                     e.TipoSangre = context.TipoSangre;
                     e.Fotografia = "/" + rutaFotografia;
+                    
                     db.Entry(e).State = System.Data.Entity.EntityState.Modified;
                     db.SaveChanges();                  
 
@@ -163,6 +166,7 @@ namespace ContratacionEmpleados.Controllers
             {
                 
                 var e = db.Empleados.Find(id);
+                //e.EstadoFila = false;
                 db.Empleados.Remove(e);
                 db.SaveChanges();
                 
@@ -171,5 +175,82 @@ namespace ContratacionEmpleados.Controllers
 
         }
 
+        public void Lista()
+        {
+
+            List<ListarEmpleado_VM> lst = null;
+            List<Cargo_VM> lst2 = null;
+            List<Area_VM> lst3 = null;
+            List<TipoContrato_VM> lst4 = null;
+            using (Models.bd_PruebasEntities db = new Models.bd_PruebasEntities())
+            {
+                lst = (from d in context.Empleados
+                       select new ListarEmpleado_VM
+                       {
+                           IdEmpleado = d.IdEmpleado,
+                           Nombres = d.Nombres
+                       }).ToList();
+                lst2 = (from d in context.Cargos
+                        select new Cargo_VM
+                        {
+                            IdCargo = d.IdCargo,
+                            NombreCargo = d.NombreCargo
+                        }).ToList();
+                lst3 = (from d in context.Areas
+                        select new Area_VM
+                        {
+                            IdArea = d.IdArea,
+                            NombreArea = d.NombreArea
+                        }).ToList();
+                lst4 = (from d in context.TipoContrato
+                        select new TipoContrato_VM
+                        {
+                            IdTipoContrato = d.IdTipoContrato,
+                            NombreTipoContrato = d.NombreTipoContrato
+                        }).ToList();
+
+            }
+            List<SelectListItem> items = lst.ConvertAll(d =>
+            {
+                return new SelectListItem()
+                {
+                    Text = d.Nombres.ToString(),
+                    Value = d.IdEmpleado.ToString(),
+                    Selected = false
+                };
+            });
+            ViewBag.items = items;
+            List<SelectListItem> items2 = lst2.ConvertAll(d =>
+            {
+                return new SelectListItem()
+                {
+                    Text = d.NombreCargo.ToString(),
+                    Value = d.IdCargo.ToString(),
+                    Selected = false
+                };
+            });
+            ViewBag.items2 = items2;
+            List<SelectListItem> items3 = lst3.ConvertAll(d =>
+            {
+                return new SelectListItem()
+                {
+                    Text = d.NombreArea.ToString(),
+                    Value = d.IdArea.ToString(),
+                    Selected = false
+                };
+            });
+            ViewBag.items3 = items3;
+            List<SelectListItem> items4 = lst4.ConvertAll(d =>
+            {
+                return new SelectListItem()
+                {
+                    Text = d.NombreTipoContrato.ToString(),
+                    Value = d.IdTipoContrato.ToString(),
+                    Selected = false
+                };
+            });
+            ViewBag.items4 = items4;
+
+        }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace ContratacionEmpleados.Models.ViewModels
 {
@@ -17,6 +18,8 @@ namespace ContratacionEmpleados.Models.ViewModels
         public Nullable<int> TipoContrato { get; set; }
         public Nullable<bool> EstadoFila { get; set; }
         public double Salario { get; set; }
+
+        public SelectList lstContrato { get; set; }
 
         public virtual Areas Areas { get; set; }
         public virtual Cargos Cargos { get; set; }

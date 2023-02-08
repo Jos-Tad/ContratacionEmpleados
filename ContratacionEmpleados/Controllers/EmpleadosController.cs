@@ -93,11 +93,14 @@ namespace ContratacionEmpleados.Controllers
         
         public ActionResult Editar(int id)
         {
+
+            Lista();
             EditarEmpleado_VM context = new EditarEmpleado_VM();
             using (bd_PruebasEntities db = new bd_PruebasEntities())
             {
                 var e = db.Empleados.Find(id);
-                
+                Contrato c = db.Contrato.Where(p => p.IdEmpleado == id && p.EstadoFila==true).FirstOrDefault();
+
                 context.Codigo = e.Codigo;
                 context.Nombres = e.Nombres;
                 context.Apellidos = e.Apellidos;
@@ -107,7 +110,18 @@ namespace ContratacionEmpleados.Controllers
                 context.TipoSangre = e.TipoSangre;
                 context.Fotografia = e.Fotografia;
                 context.IdEmpleado = e.IdEmpleado;
-                
+
+                context.IdArea = c.IdArea;
+                context.IdEmpleado = c.IdEmpleado;
+                context.IdCargo = c.IdCargo;
+                context.TipoContrato = c.TipoContrato;
+                context.Salario = c.Salario;
+                context.FechaFin = c.FechaFin;
+                context.FechaInicio = c.FechaInicio;
+                context.IdContrato = c.IdContrato;
+
+
+
             };
             return View(context);
 
@@ -124,15 +138,18 @@ namespace ContratacionEmpleados.Controllers
 
                 using (bd_PruebasEntities db = new bd_PruebasEntities())
                 {
+                    //variable para guardar file con ruta
                     string rutaFotografia = string.Empty;
                     var e = db.Empleados.Find(context.IdEmpleado);
+                    
                     if (file != null)
                     {
                         rutaFotografia = context.Codigo + DateTime.Now.ToString("yyyyMMddHHmmss") + file.FileName;
                         string path = Path.Combine(Server.MapPath("~/Imagenes"), Path.GetFileName(rutaFotografia));
                         file.SaveAs(path);
-                    }                      
-
+                    }
+                    //campos de empleado
+                    //e.IdEmpleado = context.IdEmpleado;
                     e.Codigo = context.Codigo;
                     e.Nombres = context.Nombres;
                     e.Apellidos = context.Apellidos;
@@ -141,8 +158,19 @@ namespace ContratacionEmpleados.Controllers
                     e.Genero = context.Genero;
                     e.TipoSangre = context.TipoSangre;
                     e.Fotografia = "/" + rutaFotografia;
-                    
+                    var c = db.Contrato.Find(context.IdContrato);
+                    //campos de ctrato
+                    c.IdEmpleado = context.IdEmpleado;
+                    c.IdCargo = context.IdCargo;
+                    c.IdArea = context.IdArea;
+                    c.FechaInicio = context.FechaInicio;
+                    c.FechaFin = context.FechaFin;
+                    c.TipoContrato = context.TipoContrato;
+                    c.EstadoFila = true;
+                    //c.IdContrato = context.IdContrato;
+                    //modificar
                     db.Entry(e).State = System.Data.Entity.EntityState.Modified;
+                    db.Entry(c).State = System.Data.Entity.EntityState.Modified;
                     db.SaveChanges();                  
 
                     return Redirect("~/Empleados/");

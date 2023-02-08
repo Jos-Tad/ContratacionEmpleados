@@ -2,22 +2,26 @@
 
 @{
     ViewBag.Title = "Editar";
+    List<SelectListItem> items = (List<SelectListItem>)ViewBag.items;
+    List<SelectListItem> items2 = (List<SelectListItem>)ViewBag.items2;
+    List<SelectListItem> items3 = (List<SelectListItem>)ViewBag.items3;
+    List<SelectListItem> items4 = (List<SelectListItem>)ViewBag.items4;
 }
 
-<h2>Editar Empleado</h2>
+
 
 
 @using (Html.BeginForm("Editar", "Empleados", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-    
-<div class="form-horizontal">
 
-    <hr />
+
+
+
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
     @Html.HiddenFor(model => model.IdEmpleado)
-    <div class="form-group" >
+    <div class="form-group">
         <div class="col-md-10 text-center">
             <div class="img-fluid img-circle">
                 @if (Model.Fotografia == null || Model.Fotografia == "")
@@ -29,61 +33,63 @@
 
         </div>
     </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Codigo, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Codigo, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Codigo, "", new { @class = "text-danger" })
+    
+    <div class="form-group col-lg-6">
+        <h3>Datos del empleado</h3>
+        <div class="form-group">
+            <div class="col-md-10">
+                <label class="trn">Codigo de Empleado</label>
+                @Html.EditorFor(model => model.Codigo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Codigo, "", new { @class = "text-danger" })
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Nombres, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Nombres, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Nombres, "", new { @class = "text-danger" })
+        <div class="form-group">
+            <div class="col-md-10">
+                <label class="trn">Nombres</label>
+                @Html.EditorFor(model => model.Nombres, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Nombres, "", new { @class = "text-danger" })
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Apellidos, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Apellidos, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Apellidos, "", new { @class = "text-danger" })
+        <div class="form-group">
+            <div class="col-md-10">
+                <label class="trn">Apellidos</label>
+                @Html.EditorFor(model => model.Apellidos, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Apellidos, "", new { @class = "text-danger" })
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Genero, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            <select name="Genero" class="form-control" aria-label=".form-select-sm example" required>
-                <option selected value="">Seleccione el genero</option>
-                <option value="1">Masculino</option>
-                <option value="2">Femenino</option>
-            </select>
-        </div>
-            
+        <div class="form-group">
+            <div class="col-md-10">
+                <label class="trn">Genero</label>
+                <select name="Genero" class="form-control" aria-label=".form-select-sm example" required>
+                    <option selected value="">Seleccione el genero</option>
+                    <option value="1">Masculino</option>
+                    <option value="2">Femenino</option>
+                </select>
+            </div>
+
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.TelefonoPersonal, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
+                <label class="trn">Telefono personal</label>
                 @Html.EditorFor(model => model.TelefonoPersonal, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.TelefonoPersonal, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.EmailPersonal, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
+                <label class="trn">Correo</label>
                 @Html.EditorFor(model => model.EmailPersonal, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.EmailPersonal, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.TipoSangre, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
+                <label class="trn">Tipo de sangre</label>
                 @Html.EditorFor(model => model.TipoSangre, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.TipoSangre, "", new { @class = "text-danger" })
             </div>
@@ -91,26 +97,109 @@
 
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Fotografia, htmlAttributes: new { @class = "control-label col-md-2" })
+
             <div class="col-md-10">
+                <label class="trn">Fotografia</label>
                 @Html.EditorFor(model => model.file, new { htmlAttributes = new { @class = "form-control", @type = "file" } })
                 @Html.ValidationMessageFor(model => model.file, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-lg-4">
+                <hr />
+                @Html.ActionLink("Back to List", "Index")
+            </div>
+        </div>
+    </div>
+
+
+    <div class="form-group col-lg-6">
+        <h4>Datos laborales</h4>
+
+        <div class="form-group">
+
+            <div class="col-md-10">
+
+                <label class="trn">Empleado</label>
+                @Html.DropDownListFor(model => model.IdEmpleado, new SelectList(ViewBag.items, "Value", "Text"), new { @class = "form-control selectpicker" })
+
+                @Html.ValidationMessageFor(model => model.IdEmpleado, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Editar" class="btn btn-default" />
+
+            <div class="col-md-10">
+                <label class="trn">Fecha inicio</label>
+                @Html.EditorFor(model => model.FechaInicio, new { htmlAttributes = new { @class = "form-control datepicker", @type = "date" } })
+
+                @Html.ValidationMessageFor(model => model.FechaInicio, "", new { @class = "text-danger" })
             </div>
         </div>
-    </div>
-}
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+        <div class="form-group">
+
+            <div class="col-md-10">
+                <label class="trn">Fecha final</label>
+                @Html.EditorFor(model => model.FechaFin, new { htmlAttributes = new { @class = "form-control datepicker", @type = "date" } })
+                @Html.ValidationMessageFor(model => model.FechaFin, "", new { @class = "text-danger" })
+            </div>
+
+        </div>
+
+
+
+        <div class="form-group">
+
+            <div class="col-md-10">
+                <label class="trn">Cargo</label>
+                @Html.DropDownListFor(model => model.IdCargo, new SelectList(ViewBag.items2, "Value", "Text"), new { @class = "form-control selectpicker", data_live_search = "true", title = "SELECCIONE" })
+                @Html.ValidationMessageFor(model => model.IdCargo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+
+            <div class="col-md-10">
+                <label class="trn">Area</label>
+                @Html.DropDownListFor(model => model.IdArea, new SelectList(ViewBag.items3, "Value", "Text"), new { @class = "form-control selectpicker", data_live_search = "true", title = "SELECCIONE" })
+                @Html.ValidationMessageFor(model => model.IdArea, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-10">
+                <label class="trn">Tipo de contrato</label>
+                @Html.DropDownListFor(model => model.TipoContrato, new SelectList(ViewBag.items4, "Value", "Text"), new { @class = "form-control selectpicker", data_live_search = "true", title = "SELECCIONE" })
+                @Html.ValidationMessageFor(model => model.TipoContrato, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-md-10">
+                <label class="trn">Salario</label>
+                @Html.EditorFor(model => model.Salario, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Salario, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-lg-5">
+                <hr />
+                <input type="submit" value="Editar" class="btn btn-success" />
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+
+}
+@*@RenderPage(path: "~/Views/Contratos/Editar.cshtml")*@
+
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-    
+
 }

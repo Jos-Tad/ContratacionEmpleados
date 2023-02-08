@@ -35,8 +35,9 @@ namespace ContratacionEmpleados.Models.ViewModels
         public string file { get; set; }
 
         public int IdContrato { get; set; }
-        
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> FechaInicio { get; set; }
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> FechaFin { get; set; }
         public Nullable<int> IdArea { get; set; }
         public Nullable<int> IdCargo { get; set; }

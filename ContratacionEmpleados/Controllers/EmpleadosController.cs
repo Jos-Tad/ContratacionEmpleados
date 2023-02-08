@@ -96,6 +96,7 @@ namespace ContratacionEmpleados.Controllers
 
             Lista();
             EditarEmpleado_VM context = new EditarEmpleado_VM();
+           
             using (bd_PruebasEntities db = new bd_PruebasEntities())
             {
                 var e = db.Empleados.Find(id);
@@ -109,7 +110,7 @@ namespace ContratacionEmpleados.Controllers
                 context.Genero = e.Genero;
                 context.TipoSangre = e.TipoSangre;
                 context.Fotografia = e.Fotografia;
-                context.IdEmpleado = e.IdEmpleado;
+                
 
                 context.IdArea = c.IdArea;
                 context.IdEmpleado = c.IdEmpleado;
@@ -141,7 +142,7 @@ namespace ContratacionEmpleados.Controllers
                     //variable para guardar file con ruta
                     string rutaFotografia = string.Empty;
                     var e = db.Empleados.Find(context.IdEmpleado);
-                    
+                    var c = db.Contrato.Find(context.IdContrato);
                     if (file != null)
                     {
                         rutaFotografia = context.Codigo + DateTime.Now.ToString("yyyyMMddHHmmss") + file.FileName;
@@ -158,20 +159,20 @@ namespace ContratacionEmpleados.Controllers
                     e.Genero = context.Genero;
                     e.TipoSangre = context.TipoSangre;
                     e.Fotografia = "/" + rutaFotografia;
-                    var c = db.Contrato.Find(context.IdContrato);
-                    //campos de ctrato
-                    c.IdEmpleado = context.IdEmpleado;
+                    //campos de contrato
+                    //c.IdEmpleado = context.IdEmpleado;
                     c.IdCargo = context.IdCargo;
                     c.IdArea = context.IdArea;
                     c.FechaInicio = context.FechaInicio;
                     c.FechaFin = context.FechaFin;
                     c.TipoContrato = context.TipoContrato;
+                    c.Salario = context.Salario;
                     c.EstadoFila = true;
                     //c.IdContrato = context.IdContrato;
                     //modificar
-                    db.Entry(e).State = System.Data.Entity.EntityState.Modified;
+                    db.Entry(e).State = System.Data.Entity.EntityState.Modified;                    
                     db.Entry(c).State = System.Data.Entity.EntityState.Modified;
-                    db.SaveChanges();                  
+                    db.SaveChanges();
 
                     return Redirect("~/Empleados/");
                 }

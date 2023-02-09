@@ -11,7 +11,7 @@
 </p>
 
 
-<table class="table" id="table_id">
+<table class="table table-bordered table-responsive" id="table_id">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Codigo)
@@ -34,14 +34,12 @@
         <th>
             @Html.DisplayNameFor(model => model.TipoSangre)
         </th>
-
         <th></th>
     </tr>
 
     @foreach (var item in Model)
     {
         <tr>
-
             <td>
                 @Html.DisplayFor(modelItem => item.Codigo)
             </td>

@@ -63,6 +63,25 @@
           <Property Name="AplicaIndemnizacion" Type="bit" Nullable="false" />
           <Property Name="Activo" Type="bit" Nullable="false" />
         </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'bd_Pruebas.dbo.VW_Contrato' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="VW_Contrato">
+          <Key>
+            <PropertyRef Name="Codigo" />
+            <PropertyRef Name="IdContrato" />
+            <PropertyRef Name="Salario" />
+          </Key>
+          <Property Name="Nombres" Type="nvarchar" MaxLength="50" />
+          <Property Name="Codigo" Type="nvarchar" MaxLength="6" Nullable="false" />
+          <Property Name="IdContrato" Type="int" Nullable="false" />
+          <Property Name="EstadoFila" Type="bit" />
+          <Property Name="FechaInicio" Type="date" />
+          <Property Name="FechaFin" Type="date" />
+          <Property Name="Salario" Type="float" Nullable="false" />
+          <Property Name="NombreArea" Type="nvarchar" MaxLength="100" />
+          <Property Name="NombreCargo" Type="nvarchar" MaxLength="100" />
+          <Property Name="NombreTipoContrato" Type="nvarchar" MaxLength="100" />
+        </EntityType>
         <Association Name="FK_Contrato_Areas">
           <End Role="Areas" Type="Self.Areas" Multiplicity="0..1" />
           <End Role="Contrato" Type="Self.Contrato" Multiplicity="*" />
@@ -111,12 +130,35 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="RP_Contrato_Filtro_Fecha" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FechaI" Type="date" Mode="In" />
+          <Parameter Name="FechaF" Type="date" Mode="In" />
+        </Function>
+        <Function Name="RP_Salario_Calculado" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Idcontrato" Type="int" Mode="In" />
+          <Parameter Name="FechaI" Type="date" Mode="In" />
+          <Parameter Name="FechaF" Type="date" Mode="In" />
+        </Function>
         <EntityContainer Name="bd_PruebasModelStoreContainer">
           <EntitySet Name="Areas" EntityType="Self.Areas" Schema="contratacion" store:Type="Tables" />
           <EntitySet Name="Cargos" EntityType="Self.Cargos" Schema="contratacion" store:Type="Tables" />
           <EntitySet Name="Contrato" EntityType="Self.Contrato" Schema="contratacion" store:Type="Tables" />
           <EntitySet Name="Empleados" EntityType="Self.Empleados" Schema="contratacion" store:Type="Tables" />
           <EntitySet Name="TipoContrato" EntityType="Self.TipoContrato" Schema="contratacion" store:Type="Tables" />
+          <EntitySet Name="VW_Contrato" EntityType="Self.VW_Contrato" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [VW_Contrato].[Nombres] AS [Nombres], 
+    [VW_Contrato].[Codigo] AS [Codigo], 
+    [VW_Contrato].[IdContrato] AS [IdContrato], 
+    [VW_Contrato].[EstadoFila] AS [EstadoFila], 
+    [VW_Contrato].[FechaInicio] AS [FechaInicio], 
+    [VW_Contrato].[FechaFin] AS [FechaFin], 
+    [VW_Contrato].[Salario] AS [Salario], 
+    [VW_Contrato].[NombreArea] AS [NombreArea], 
+    [VW_Contrato].[NombreCargo] AS [NombreCargo], 
+    [VW_Contrato].[NombreTipoContrato] AS [NombreTipoContrato]
+    FROM [dbo].[VW_Contrato] AS [VW_Contrato]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK_Contrato_Areas" Association="Self.FK_Contrato_Areas">
             <End Role="Areas" EntitySet="Areas" />
             <End Role="Contrato" EntitySet="Contrato" />
@@ -139,11 +181,21 @@
     <edmx:ConceptualModels>
       <Schema Namespace="bd_PruebasModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="bd_PruebasEntities" annotation:LazyLoadingEnabled="true">
+          <FunctionImport Name="RP_Contrato_Filtro_Fecha" ReturnType="Collection(bd_PruebasModel.RP_Contrato_Filtro_Fecha_Result)">
+            <Parameter Name="FechaI" Mode="In" Type="DateTime" />
+            <Parameter Name="FechaF" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="RP_Salario_Calculado" ReturnType="Collection(bd_PruebasModel.RP_Salario_Calculado_Result)">
+            <Parameter Name="Idcontrato" Mode="In" Type="Int32" />
+            <Parameter Name="FechaI" Mode="In" Type="DateTime" />
+            <Parameter Name="FechaF" Mode="In" Type="DateTime" />
+          </FunctionImport>
           <EntitySet Name="Areas" EntityType="bd_PruebasModel.Areas" />
           <EntitySet Name="Cargos" EntityType="bd_PruebasModel.Cargos" />
           <EntitySet Name="Contrato" EntityType="bd_PruebasModel.Contrato" />
           <EntitySet Name="Empleados" EntityType="bd_PruebasModel.Empleados" />
           <EntitySet Name="TipoContrato" EntityType="bd_PruebasModel.TipoContrato" />
+          <EntitySet Name="VW_Contrato" EntityType="bd_PruebasModel.VW_Contrato" />
           <AssociationSet Name="FK_Contrato_Areas" Association="bd_PruebasModel.FK_Contrato_Areas">
             <End Role="Areas" EntitySet="Areas" />
             <End Role="Contrato" EntitySet="Contrato" />
@@ -161,6 +213,29 @@
             <End Role="Contrato" EntitySet="Contrato" />
           </AssociationSet>
         </EntityContainer>
+        <ComplexType Name="RP_Contrato_Filtro_Fecha_Result">
+          <Property Type="Int32" Name="IdContrato" Nullable="false" />
+          <Property Type="Int32" Name="IdEmpleado" Nullable="false" />
+          <Property Type="DateTime" Name="FechaInicio" Nullable="true" />
+          <Property Type="DateTime" Name="FechaFin" Nullable="true" />
+          <Property Type="Int32" Name="IdArea" Nullable="true" />
+          <Property Type="Int32" Name="IdCargo" Nullable="true" />
+          <Property Type="Int32" Name="TipoContrato" Nullable="true" />
+          <Property Type="Boolean" Name="EstadoFila" Nullable="true" />
+          <Property Type="Double" Name="Salario" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="RP_Salario_Calculado_Result">
+          <Property Type="String" Name="Nombres" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Codigo" Nullable="false" MaxLength="6" />
+          <Property Type="Int32" Name="IdContrato" Nullable="false" />
+          <Property Type="Boolean" Name="EstadoFila" Nullable="true" />
+          <Property Type="DateTime" Name="FechaInicio" Nullable="true" />
+          <Property Type="DateTime" Name="FechaFin" Nullable="true" />
+          <Property Type="Double" Name="Salario" Nullable="false" />
+          <Property Type="String" Name="NombreArea" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="NombreCargo" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="NombreTipoContrato" Nullable="true" MaxLength="100" />
+        </ComplexType>
         <EntityType Name="Areas">
           <Key>
             <PropertyRef Name="IdArea" />
@@ -227,6 +302,23 @@
           <Property Name="Activo" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Contrato" Relationship="bd_PruebasModel.FK_Contrato_TipoContrato" FromRole="TipoContrato" ToRole="Contrato" />
         </EntityType>
+        <EntityType Name="VW_Contrato">
+          <Key>
+            <PropertyRef Name="Codigo" />
+            <PropertyRef Name="IdContrato" />
+            <PropertyRef Name="Salario" />
+          </Key>
+          <Property Name="Nombres" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Codigo" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="true" />
+          <Property Name="IdContrato" Type="Int32" Nullable="false" />
+          <Property Name="EstadoFila" Type="Boolean" />
+          <Property Name="FechaInicio" Type="DateTime" Precision="0" />
+          <Property Name="FechaFin" Type="DateTime" Precision="0" />
+          <Property Name="Salario" Type="Double" Nullable="false" />
+          <Property Name="NombreArea" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="NombreCargo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="NombreTipoContrato" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
         <Association Name="FK_Contrato_Areas">
           <End Type="bd_PruebasModel.Areas" Role="Areas" Multiplicity="0..1" />
           <End Type="bd_PruebasModel.Contrato" Role="Contrato" Multiplicity="*" />
@@ -281,6 +373,37 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="bd_PruebasModelStoreContainer" CdmEntityContainer="bd_PruebasEntities">
+          <FunctionImportMapping FunctionImportName="RP_Contrato_Filtro_Fecha" FunctionName="bd_PruebasModel.Store.RP_Contrato_Filtro_Fecha">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="bd_PruebasModel.RP_Contrato_Filtro_Fecha_Result">
+                <ScalarProperty Name="IdContrato" ColumnName="IdContrato" />
+                <ScalarProperty Name="IdEmpleado" ColumnName="IdEmpleado" />
+                <ScalarProperty Name="FechaInicio" ColumnName="FechaInicio" />
+                <ScalarProperty Name="FechaFin" ColumnName="FechaFin" />
+                <ScalarProperty Name="IdArea" ColumnName="IdArea" />
+                <ScalarProperty Name="IdCargo" ColumnName="IdCargo" />
+                <ScalarProperty Name="TipoContrato" ColumnName="TipoContrato" />
+                <ScalarProperty Name="EstadoFila" ColumnName="EstadoFila" />
+                <ScalarProperty Name="Salario" ColumnName="Salario" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="RP_Salario_Calculado" FunctionName="bd_PruebasModel.Store.RP_Salario_Calculado">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="bd_PruebasModel.RP_Salario_Calculado_Result">
+                <ScalarProperty Name="Nombres" ColumnName="Nombres" />
+                <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+                <ScalarProperty Name="IdContrato" ColumnName="IdContrato" />
+                <ScalarProperty Name="EstadoFila" ColumnName="EstadoFila" />
+                <ScalarProperty Name="FechaInicio" ColumnName="FechaInicio" />
+                <ScalarProperty Name="FechaFin" ColumnName="FechaFin" />
+                <ScalarProperty Name="Salario" ColumnName="Salario" />
+                <ScalarProperty Name="NombreArea" ColumnName="NombreArea" />
+                <ScalarProperty Name="NombreCargo" ColumnName="NombreCargo" />
+                <ScalarProperty Name="NombreTipoContrato" ColumnName="NombreTipoContrato" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <EntitySetMapping Name="Areas">
             <EntityTypeMapping TypeName="bd_PruebasModel.Areas">
               <MappingFragment StoreEntitySet="Areas">
@@ -344,6 +467,22 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="VW_Contrato">
+            <EntityTypeMapping TypeName="bd_PruebasModel.VW_Contrato">
+              <MappingFragment StoreEntitySet="VW_Contrato">
+                <ScalarProperty Name="NombreTipoContrato" ColumnName="NombreTipoContrato" />
+                <ScalarProperty Name="NombreCargo" ColumnName="NombreCargo" />
+                <ScalarProperty Name="NombreArea" ColumnName="NombreArea" />
+                <ScalarProperty Name="Salario" ColumnName="Salario" />
+                <ScalarProperty Name="FechaFin" ColumnName="FechaFin" />
+                <ScalarProperty Name="FechaInicio" ColumnName="FechaInicio" />
+                <ScalarProperty Name="EstadoFila" ColumnName="EstadoFila" />
+                <ScalarProperty Name="IdContrato" ColumnName="IdContrato" />
+                <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+                <ScalarProperty Name="Nombres" ColumnName="Nombres" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -367,11 +506,12 @@
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
       <Diagram DiagramId="7f4c2997a4744d41bc6a21015e2b9654" Name="Diagram1">
-        <EntityTypeShape EntityType="bd_PruebasModel.Areas" Width="1.5" PointX="4.875" PointY="2.125" />
-        <EntityTypeShape EntityType="bd_PruebasModel.Cargos" Width="1.5" PointX="4.875" PointY="9" />
-        <EntityTypeShape EntityType="bd_PruebasModel.Contrato" Width="1.5" PointX="7.125" PointY="1.375" />
-        <EntityTypeShape EntityType="bd_PruebasModel.Empleados" Width="1.5" PointX="4.875" PointY="12.125" />
-        <EntityTypeShape EntityType="bd_PruebasModel.TipoContrato" Width="1.5" PointX="4.875" PointY="6" />
+        <EntityTypeShape EntityType="bd_PruebasModel.Areas" Width="1.5" PointX="0.75" PointY="1.75" />
+        <EntityTypeShape EntityType="bd_PruebasModel.Cargos" Width="1.5" PointX="0.75" PointY="10.125" />
+        <EntityTypeShape EntityType="bd_PruebasModel.Contrato" Width="1.5" PointX="3" PointY="1" />
+        <EntityTypeShape EntityType="bd_PruebasModel.Empleados" Width="1.5" PointX="0.75" PointY="6.5" />
+        <EntityTypeShape EntityType="bd_PruebasModel.TipoContrato" Width="1.5" PointX="0.75" PointY="13.25" />
+        <EntityTypeShape EntityType="bd_PruebasModel.VW_Contrato" Width="1.5" PointX="2.75" PointY="5.75" />
         <AssociationConnector Association="bd_PruebasModel.FK_Contrato_Areas" />
         <AssociationConnector Association="bd_PruebasModel.FK_Contrato_Cargos" />
         <AssociationConnector Association="bd_PruebasModel.FK_Contrato_Empleados" />

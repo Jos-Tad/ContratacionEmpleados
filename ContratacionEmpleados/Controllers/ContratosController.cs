@@ -2,6 +2,7 @@
 using ContratacionEmpleados.Models.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
@@ -12,8 +13,52 @@ namespace ContratacionEmpleados.Controllers
     public class ContratosController : Controller
     {
 
+
+
         bd_PruebasEntities context = new bd_PruebasEntities();
         // GET: Contratos
+        public ActionResult Listar()
+        {
+            using (bd_PruebasEntities db = new bd_PruebasEntities())
+            {
+                var lista = (from a in db.VW_Contrato
+                             where a.EstadoFila == true
+                             select new VwListarContrato
+                             {
+                                 Nombres = a.Nombres,
+                                 FechaInicio = a.FechaInicio,
+                                 FechaFin = a.FechaFin,
+                                 NombreArea = a.NombreArea,
+                                 NombreCargo = a.NombreCargo,
+                                 NombreTipoContrato = a.NombreTipoContrato,
+                                 Salario = a.Salario
+                                 //Dias = a.Dias,
+                                 
+                             }).ToList();
+
+                return View(lista);
+            };
+
+
+           
+        }
+        [HttpPost]
+        public ActionResult Buscar(DateTime fechai, DateTime fechaf)
+        {
+            List<VwListarContrato> dataList = new List<VwListarContrato>();
+
+            using (bd_PruebasEntities db = new bd_PruebasEntities())
+            {
+                
+
+                
+                
+            }
+
+            return View(dataList);
+        }
+
+
         public ActionResult Crear()
         {
 

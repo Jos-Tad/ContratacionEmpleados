@@ -131,7 +131,6 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ContratosController.cs" />
-    <Compile Include="Controllers\EmpleadoContratoController.cs" />
     <Compile Include="Controllers\EmpleadosController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
@@ -164,17 +163,25 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Empleados_BD.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\RP_Contrato_Filtro_Fecha_Result.cs">
+      <DependentUpon>Empleados_BD.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\RP_Salario_Calculado_Result.cs">
+      <DependentUpon>Empleados_BD.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\TipoContrato.cs">
       <DependentUpon>Empleados_BD.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ViewModels\Area_VM.cs" />
     <Compile Include="Models\ViewModels\Cargo_VM.cs" />
     <Compile Include="Models\ViewModels\Contrato_VM.cs" />
-    <Compile Include="Models\ViewModels\DropDownTipoContrato.cs" />
     <Compile Include="Models\ViewModels\EditarEmpleado_VM.cs" />
-    <Compile Include="Models\ViewModels\EmpleadoContrato_VM.cs" />
     <Compile Include="Models\ViewModels\ListarEmpleado_VM.cs" />
     <Compile Include="Models\ViewModels\TipoContrato_VM.cs" />
+    <Compile Include="Models\ViewModels\VwListarContrato.cs" />
+    <Compile Include="Models\VW_Contrato.cs">
+      <DependentUpon>Empleados_BD.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -268,7 +275,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Imagenes\" />
-    <Folder Include="Views\EmpleadoContrato\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -281,6 +287,7 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <None Include="packages.config" />
     <Content Include="Views\Contratos\Crear.cshtml" />
+    <Content Include="Views\Contratos\Listar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

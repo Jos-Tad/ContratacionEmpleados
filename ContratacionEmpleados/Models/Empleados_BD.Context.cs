@@ -12,6 +12,8 @@ namespace ContratacionEmpleados.Models
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class bd_PruebasEntities : DbContext
     {
@@ -30,5 +32,36 @@ namespace ContratacionEmpleados.Models
         public virtual DbSet<Contrato> Contrato { get; set; }
         public virtual DbSet<Empleados> Empleados { get; set; }
         public virtual DbSet<TipoContrato> TipoContrato { get; set; }
+        public virtual DbSet<VW_Contrato> VW_Contrato { get; set; }
+    
+        public virtual ObjectResult<RP_Contrato_Filtro_Fecha_Result> RP_Contrato_Filtro_Fecha(Nullable<System.DateTime> fechaI, Nullable<System.DateTime> fechaF)
+        {
+            var fechaIParameter = fechaI.HasValue ?
+                new ObjectParameter("FechaI", fechaI) :
+                new ObjectParameter("FechaI", typeof(System.DateTime));
+    
+            var fechaFParameter = fechaF.HasValue ?
+                new ObjectParameter("FechaF", fechaF) :
+                new ObjectParameter("FechaF", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RP_Contrato_Filtro_Fecha_Result>("RP_Contrato_Filtro_Fecha", fechaIParameter, fechaFParameter);
+        }
+    
+        public virtual ObjectResult<RP_Salario_Calculado_Result> RP_Salario_Calculado(Nullable<int> idcontrato, Nullable<System.DateTime> fechaI, Nullable<System.DateTime> fechaF)
+        {
+            var idcontratoParameter = idcontrato.HasValue ?
+                new ObjectParameter("Idcontrato", idcontrato) :
+                new ObjectParameter("Idcontrato", typeof(int));
+    
+            var fechaIParameter = fechaI.HasValue ?
+                new ObjectParameter("FechaI", fechaI) :
+                new ObjectParameter("FechaI", typeof(System.DateTime));
+    
+            var fechaFParameter = fechaF.HasValue ?
+                new ObjectParameter("FechaF", fechaF) :
+                new ObjectParameter("FechaF", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RP_Salario_Calculado_Result>("RP_Salario_Calculado", idcontratoParameter, fechaIParameter, fechaFParameter);
+        }
     }
 }

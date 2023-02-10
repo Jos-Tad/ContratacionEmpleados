@@ -1,5 +1,6 @@
 ﻿using ContratacionEmpleados.Models;
 using ContratacionEmpleados.Models.ViewModels;
+using Rotativa;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -8,15 +9,19 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
+
 namespace ContratacionEmpleados.Controllers
 {
     public class ContratosController : Controller
     {
 
-
+        private readonly string connectionString = @"Data Source=192.168.20.62\SQL2019;Initial Catalog=bd_Pruebas;User ID=UsrIGC;Password=UsrIGC;MultipleActiveResultSets=True;Application Name=EntityFramework";
+        
 
         bd_PruebasEntities context = new bd_PruebasEntities();
         // GET: Contratos
+        [HttpGet]
+
         public ActionResult Listar()
         {
             using (bd_PruebasEntities db = new bd_PruebasEntities())
@@ -26,6 +31,7 @@ namespace ContratacionEmpleados.Controllers
                              select new VwListarContrato
                              {
                                  Nombres = a.Nombres,
+                                 Codigo = a.Codigo,
                                  FechaInicio = a.FechaInicio,
                                  FechaFin = a.FechaFin,
                                  NombreArea = a.NombreArea,
@@ -42,20 +48,62 @@ namespace ContratacionEmpleados.Controllers
 
            
         }
+        
+
         [HttpPost]
-        public ActionResult Buscar(DateTime fechai, DateTime fechaf)
+        public ActionResult Listar(DateTime fechai, DateTime fechaf)
         {
             List<VwListarContrato> dataList = new List<VwListarContrato>();
+            
 
-            using (bd_PruebasEntities db = new bd_PruebasEntities())
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                
+                connection.Open();
 
-                
-                
+                SqlCommand command = new SqlCommand("RP_Contrato_Filtro_Fecha", connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                command.Parameters.AddWithValue("@FechaI", fechai);
+                command.Parameters.AddWithValue("@FechaF", fechaf);
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        VwListarContrato lista = new VwListarContrato();
+                        lista.Nombres = reader.GetString(0);
+                        lista.Codigo = reader.GetString(1);
+                        lista.IdContrato = reader.GetInt32(2);
+                        lista.EstadoFila = reader.GetBoolean(3);
+                        lista.FechaInicio = reader.GetDateTime(4);
+                        lista.FechaFin = reader.GetDateTime(5);
+                        lista.Salario = reader.GetDouble(6);
+                        lista.NombreArea = reader.GetString(7);
+                        lista.NombreCargo = reader.GetString(8);
+                        lista.NombreTipoContrato = reader.GetString(9);
+
+                        dataList.Add(lista);
+                    }
+                }
+               
+
+                reader.Close();
             }
 
             return View(dataList);
+        }
+
+        public ActionResult Rpt_Contrato()
+        {
+            List<VwListarContrato> list = new List<VwListarContrato>();
+
+
+
+            return View();
+
         }
 
 
@@ -183,6 +231,10 @@ namespace ContratacionEmpleados.Controllers
             return Redirect("~/Empleados/");
 
         }
+
+
+
+       
       
     }
 }

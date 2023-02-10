@@ -14,14 +14,14 @@ namespace ContratacionEmpleados.Models
     public partial class RP_Contrato_Filtro_Fecha_Result
     {
         public int IdContrato { get; set; }
-        public int IdEmpleado { get; set; }
-        public int Codigo { get; set; }
         public Nullable<System.DateTime> FechaInicio { get; set; }
         public Nullable<System.DateTime> FechaFin { get; set; }
-        public Nullable<int> IdArea { get; set; }
-        public Nullable<int> IdCargo { get; set; }
-        public Nullable<int> TipoContrato { get; set; }
         public Nullable<bool> EstadoFila { get; set; }
         public double Salario { get; set; }
+        public string Nombres { get; set; }
+        public string Codigo { get; set; }
+        public string NombreArea { get; set; }
+        public string NombreCargo { get; set; }
+        public string NombreTipoContrato { get; set; }
     }
 }

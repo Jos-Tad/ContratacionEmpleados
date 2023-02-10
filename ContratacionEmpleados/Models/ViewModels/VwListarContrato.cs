@@ -11,7 +11,7 @@ namespace ContratacionEmpleados.Models.ViewModels
 
         public string Nombres { get; set; }
         public int IdContrato { get; set; }
-        public int Codigo { get; set; }
+        public string Codigo { get; set; }
         public Nullable<bool> EstadoFila { get; set; }
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "Fecha Inicio")]
@@ -26,5 +26,7 @@ namespace ContratacionEmpleados.Models.ViewModels
         public string NombreCargo { get; set; }
         [Display(Name = "Tipo de Contrato")]
         public string NombreTipoContrato { get; set; }
+
+        public string SalarioClaculado { get; set; }
     }
 }

@@ -212,17 +212,18 @@ advertencia 6002: La tabla o vista 'bd_Pruebas.dbo.VW_Contrato' no tiene definid
             <End Role="TipoContrato" EntitySet="TipoContrato" />
             <End Role="Contrato" EntitySet="Contrato" />
           </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
         <ComplexType Name="RP_Contrato_Filtro_Fecha_Result">
           <Property Type="Int32" Name="IdContrato" Nullable="false" />
-          <Property Type="Int32" Name="IdEmpleado" Nullable="false" />
           <Property Type="DateTime" Name="FechaInicio" Nullable="true" />
           <Property Type="DateTime" Name="FechaFin" Nullable="true" />
-          <Property Type="Int32" Name="IdArea" Nullable="true" />
-          <Property Type="Int32" Name="IdCargo" Nullable="true" />
-          <Property Type="Int32" Name="TipoContrato" Nullable="true" />
           <Property Type="Boolean" Name="EstadoFila" Nullable="true" />
           <Property Type="Double" Name="Salario" Nullable="false" />
+          <Property Type="String" Name="Nombres" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Codigo" Nullable="false" MaxLength="6" />
+          <Property Type="String" Name="NombreArea" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="NombreCargo" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="NombreTipoContrato" Nullable="true" MaxLength="100" />
         </ComplexType>
         <ComplexType Name="RP_Salario_Calculado_Result">
           <Property Type="String" Name="Nombres" Nullable="true" MaxLength="50" />
@@ -377,14 +378,15 @@ advertencia 6002: La tabla o vista 'bd_Pruebas.dbo.VW_Contrato' no tiene definid
             <ResultMapping>
               <ComplexTypeMapping TypeName="bd_PruebasModel.RP_Contrato_Filtro_Fecha_Result">
                 <ScalarProperty Name="IdContrato" ColumnName="IdContrato" />
-                <ScalarProperty Name="IdEmpleado" ColumnName="IdEmpleado" />
                 <ScalarProperty Name="FechaInicio" ColumnName="FechaInicio" />
                 <ScalarProperty Name="FechaFin" ColumnName="FechaFin" />
-                <ScalarProperty Name="IdArea" ColumnName="IdArea" />
-                <ScalarProperty Name="IdCargo" ColumnName="IdCargo" />
-                <ScalarProperty Name="TipoContrato" ColumnName="TipoContrato" />
                 <ScalarProperty Name="EstadoFila" ColumnName="EstadoFila" />
                 <ScalarProperty Name="Salario" ColumnName="Salario" />
+                <ScalarProperty Name="Nombres" ColumnName="Nombres" />
+                <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+                <ScalarProperty Name="NombreArea" ColumnName="NombreArea" />
+                <ScalarProperty Name="NombreCargo" ColumnName="NombreCargo" />
+                <ScalarProperty Name="NombreTipoContrato" ColumnName="NombreTipoContrato" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -483,7 +485,7 @@ advertencia 6002: La tabla o vista 'bd_Pruebas.dbo.VW_Contrato' no tiene definid
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-        </EntityContainerMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>
@@ -506,12 +508,12 @@ advertencia 6002: La tabla o vista 'bd_Pruebas.dbo.VW_Contrato' no tiene definid
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
       <Diagram DiagramId="7f4c2997a4744d41bc6a21015e2b9654" Name="Diagram1">
-        <EntityTypeShape EntityType="bd_PruebasModel.Areas" Width="1.5" PointX="0.75" PointY="1.75" />
-        <EntityTypeShape EntityType="bd_PruebasModel.Cargos" Width="1.5" PointX="0.75" PointY="10.125" />
+        <EntityTypeShape EntityType="bd_PruebasModel.Areas" Width="1.5" PointX="0.75" PointY="5.5" />
+        <EntityTypeShape EntityType="bd_PruebasModel.Cargos" Width="1.5" PointX="0.75" PointY="8.25" />
         <EntityTypeShape EntityType="bd_PruebasModel.Contrato" Width="1.5" PointX="3" PointY="1" />
-        <EntityTypeShape EntityType="bd_PruebasModel.Empleados" Width="1.5" PointX="0.75" PointY="6.5" />
-        <EntityTypeShape EntityType="bd_PruebasModel.TipoContrato" Width="1.5" PointX="0.75" PointY="13.25" />
-        <EntityTypeShape EntityType="bd_PruebasModel.VW_Contrato" Width="1.5" PointX="2.75" PointY="5.75" />
+        <EntityTypeShape EntityType="bd_PruebasModel.Empleados" Width="1.5" PointX="0.75" PointY="1.25" />
+        <EntityTypeShape EntityType="bd_PruebasModel.TipoContrato" Width="1.5" PointX="0.75" PointY="11.375" />
+        <EntityTypeShape EntityType="bd_PruebasModel.VW_Contrato" Width="1.5" PointX="5.75" PointY="0.75" />
         <AssociationConnector Association="bd_PruebasModel.FK_Contrato_Areas" />
         <AssociationConnector Association="bd_PruebasModel.FK_Contrato_Cargos" />
         <AssociationConnector Association="bd_PruebasModel.FK_Contrato_Empleados" />
